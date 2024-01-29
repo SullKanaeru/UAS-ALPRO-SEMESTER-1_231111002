@@ -6,18 +6,49 @@ public class UAS_SEMESTER_1 {
         Scanner input = new Scanner(System.in);
         boolean condition = true;
         char userMenjawab;
-        int batasAngkaMinimal = 0;
-        int batasAngkaMaksimal = 100;
+        int batasAngkaMinimal = 0; // Interval nilai minimal
+        int batasAngkaMaksimal = 100; // Interval nilai maksimal
+        boolean [][] angkaDitanyakan = new boolean[3][101]; // Array untuk menandai suatu angka pernah digunakan atau tidak
         
         while (condition) {
+            // Logika agar komputer dapat memilih angka untuk memberi tebakan kepada user
             int computerMenebak = (int) (Math.random() * ((batasAngkaMaksimal - batasAngkaMinimal) + 1) + batasAngkaMinimal);
             
+            // Logika agar komputer dapat menentukan ingin menentukan status angka tebakan
             int computerBerfikir = (int) ((Math.random() * 2) + 1);
             
+            // Logika untuk menghitung selisih
             int selisih = batasAngkaMaksimal - batasAngkaMinimal;
             
-            System.out.println(batasAngkaMinimal + " - " + batasAngkaMaksimal);
+            // Gunakan ini jika membutuhkan keterangan interval
+            //System.out.println(batasAngkaMinimal + " - " + batasAngkaMaksimal);
             
+            // Apabila ternyata interval nilai maksimal lebih rendah daripada nilai minimalnya, maka tampilkan pesan error
+            if (batasAngkaMaksimal < batasAngkaMinimal) {
+                System.out.println("Aku tidak bisa memikirkannya lebih jauh karena jawaban anda yang barusan ambigu");
+                break;
+            
+            // Bila ternyata suatu angka pernah disebutkan maka skip proses di bawah
+            }else if (angkaDitanyakan[computerBerfikir][computerMenebak] == true && selisih != 0) {
+                continue;
+            }
+
+            // Bila selisihnya sisa 0, maka komputer akan memberikan tebakan
+            if (selisih == 0) {
+                System.out.println("Apakah angka yang kamu pikirkan adalah " + batasAngkaMaksimal + " (Y/T) ?");
+                userMenjawab = input.next().charAt(0);
+                
+                if (userMenjawab == 'Y') {
+                    System.out.println("Yey, terimakasih karena sudah bermain bersamaku");
+                    condition = false;
+                    
+                } else {
+                    System.out.println("Tega banget membohongi aku :(");
+                    condition = false;
+                }
+            }
+            
+            // Logika bila komputer ingin memberikan tebakan dengan status lebih besar dari
             if (selisih != 0 && computerBerfikir == 1) {
                 System.out.println("Apakah angka lebih besar dari " + computerMenebak + " (Y/T)");
                 userMenjawab = input.next().charAt(0);
@@ -28,9 +59,9 @@ public class UAS_SEMESTER_1 {
                     batasAngkaMaksimal = computerMenebak;
                 }
                 
+            // Logika bila komputer ingin memberikan tebakan dengan status lebih kecil dari
             } else if (selisih != 0 && computerBerfikir == 2) {
                 System.out.println("Apakah angka lebih kecil dari " + computerMenebak + " (Y/T)");
-                
                 userMenjawab = input.next().charAt(0);
                 
                 if(userMenjawab == 'Y') {
@@ -38,18 +69,10 @@ public class UAS_SEMESTER_1 {
                 } else if (userMenjawab == 'T') {
                     batasAngkaMinimal = computerMenebak;
                 }
-                
-            } else if (selisih == 0) {
-                System.out.println("Apakah angka yang kamu pikirkan adalah " + batasAngkaMaksimal + " (Y/T) ?");
-                userMenjawab = input.next().charAt(0);
-                if (userMenjawab == 'Y') {
-                    System.out.println("I know it haha");
-                    condition = false;
-                } else {
-                    System.out.println("How dare you lie to me");
-                    condition = false;
-                }
             }
+            
+            // Logika untuk memberikan status bahwa angka yang komputer sebutkan sebelumnya sudah pernah digunakan
+            angkaDitanyakan[computerBerfikir][computerMenebak] = true;
         }   
     }
 }
