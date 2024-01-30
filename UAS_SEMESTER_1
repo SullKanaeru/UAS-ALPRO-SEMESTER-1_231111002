@@ -4,13 +4,12 @@ import java.util.Scanner;
 public class UAS_SEMESTER_1 {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        boolean condition = true;
         char userMenjawab;
-        int batasAngkaMinimal = 0; // Interval nilai minimal
+        int batasAngkaMinimal = 1; // Interval nilai minimal
         int batasAngkaMaksimal = 100; // Interval nilai maksimal
         boolean [][] angkaDitanyakan = new boolean[3][101]; // Array untuk menandai suatu angka pernah digunakan atau tidak
         
-        while (condition) {
+        while (true) {
             // Logika agar komputer dapat memilih angka untuk memberi tebakan kepada user
             int computerMenebak = (int) (Math.random() * ((batasAngkaMaksimal - batasAngkaMinimal) + 1) + batasAngkaMinimal);
             
@@ -29,22 +28,22 @@ public class UAS_SEMESTER_1 {
                 break;
             
             // Bila ternyata suatu angka pernah disebutkan maka skip proses di bawah
-            }else if (angkaDitanyakan[computerBerfikir][computerMenebak] == true && selisih != 0) {
+            } else if (angkaDitanyakan[computerBerfikir][computerMenebak] == true && selisih != 0) {
                 continue;
             }
 
             // Bila selisihnya sisa 0, maka komputer akan memberikan tebakan
-            if (selisih == 0) {
+            if (selisih <= 1) {
                 System.out.println("Apakah angka yang kamu pikirkan adalah " + batasAngkaMaksimal + " (Y/T) ?");
                 userMenjawab = input.next().charAt(0);
                 
                 if (userMenjawab == 'Y') {
                     System.out.println("Yey, terimakasih karena sudah bermain bersamaku");
-                    condition = false;
+                    break;
                     
                 } else {
-                    System.out.println("Tega banget membohongi aku :(");
-                    condition = false;
+                    System.out.println("Angka yang kamu pikirkan adalah " + batasAngkaMinimal );
+                    break;
                 }
             }
             
@@ -55,6 +54,7 @@ public class UAS_SEMESTER_1 {
                 
                 if(userMenjawab == 'Y') {
                     batasAngkaMinimal = computerMenebak + 1;
+                    
                 } else if (userMenjawab == 'T') {
                     batasAngkaMaksimal = computerMenebak;
                 }
@@ -66,10 +66,11 @@ public class UAS_SEMESTER_1 {
                 
                 if(userMenjawab == 'Y') {
                     batasAngkaMaksimal = computerMenebak - 1;
+                    
                 } else if (userMenjawab == 'T') {
                     batasAngkaMinimal = computerMenebak;
                 }
-            }
+            }    
             
             // Logika untuk memberikan status bahwa angka yang komputer sebutkan sebelumnya sudah pernah digunakan
             angkaDitanyakan[computerBerfikir][computerMenebak] = true;
